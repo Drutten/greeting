@@ -2,15 +2,15 @@ import { useState, useRef, useEffect } from 'react';
 import UserMenu from './UserMenu';
 import Login from './Login';
 
-function Header({user, setUser}) {
+function Header({user, setUser, setMessage}) {
 
   const [boxOpen, setBoxOpen] = useState(false);
   const menuRef = useRef();
 
   useEffect(() => {
-    document.addEventListener('mousedown', close);
+    document.addEventListener('mousedown', handleOutsideClick);
     return () => {
-      document.removeEventListener('mousedown', close);
+      document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
 
@@ -18,7 +18,7 @@ function Header({user, setUser}) {
     setBoxOpen(!boxOpen);
   };
 
-  const close = (e) => {
+  const handleOutsideClick = (e) => {
     if (menuRef?.current?.contains(e.target)) {
       return;
     } 
@@ -34,13 +34,13 @@ function Header({user, setUser}) {
           <button type='button' className='login-button' onClick={toggleMenu}>Log in</button>
         </div>}
         {(boxOpen && !user) && <div className="user-menu-box">
-          <Login setUser={setUser} setBoxOpen={setBoxOpen} />
+          <Login setUser={setUser} setBoxOpen={setBoxOpen} setMessage={setMessage} />
         </div>}
         {!!user && <div className='user'>
           <span className='user-menu-button' onClick={toggleMenu}>&#9787;</span>
         </div>}
         {(boxOpen && !!user) && <div className="user-menu-box">
-          <UserMenu user={user} setUser={setUser} setBoxOpen={setBoxOpen} />
+          <UserMenu user={user} setUser={setUser} setBoxOpen={setBoxOpen} setMessage={setMessage} />
         </div>}
       </div>
       
